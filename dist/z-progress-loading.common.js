@@ -561,12 +561,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3d1d1951-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/index.vue?vue&type=template&id=a17f89b8&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"768e9e92-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/index.vue?vue&type=template&id=ed79d1c4&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"z-progress-loading"}},[_c('canvas',{attrs:{"id":"z-progress-loading-canvas","width":_vm.width,"height":_vm.height}},[_c('i',[_vm._v("Not supported.")])])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/index.vue?vue&type=template&id=a17f89b8&
+// CONCATENATED MODULE: ./src/index.vue?vue&type=template&id=ed79d1c4&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/index.vue?vue&type=script&lang=js&
 //
@@ -577,6 +577,10 @@ var staticRenderFns = []
 //
 //
 //
+const isNoValue = value => {
+  return value === void 0 || value === null || value === '';
+};
+
 /* harmony default export */ var lib_vue_loader_options_srcvue_type_script_lang_js_ = ({
   name: 'z-progress-loading',
   props: ['progress', 'start', 'config'],
@@ -656,14 +660,14 @@ var staticRenderFns = []
       this.elemMaxHeight = Number(config.elemMaxHeight) || this.elemMaxHeight;
       console.log(config.elemDeltaHeight, typeof config.elemDeltaHeight);
 
-      if (config.elemDeltaHeight !== void 0) {
+      if (!isNoValue(config.elemDeltaHeight)) {
         const elemDeltaHeight = Number(config.elemDeltaHeight);
-        this.elemDeltaHeight = typeof elemDeltaHeight === 'number' ? elemDeltaHeight : this.elemDeltaHeight;
+        this.elemDeltaHeight = !isNaN(elemDeltaHeight) ? elemDeltaHeight : this.elemDeltaHeight;
       }
 
-      if (config.spacing !== void 0) {
+      if (!isNoValue(config.spacing)) {
         const spacing = Number(config.spacing);
-        this.spacing = typeof spacing === 'number' ? spacing : this.spacing;
+        this.spacing = !isNaN(spacing) ? spacing : this.spacing;
       }
 
       this.bgColor = config.bgColor || this.bgColor;
