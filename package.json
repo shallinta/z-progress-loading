@@ -1,10 +1,16 @@
 {
-  "name": "vue",
-  "version": "0.1.0",
-  "private": true,
+  "name": "z-progress-loading",
+  "version": "0.1.1",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/z-progress-loading.common.js",
   "scripts": {
+    "start": "npm run serve",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --name z-progress-loading ./src/index.vue",
+    "release": "standard-version && npm publish",
+    "postrelease": "git push && git push origin --tags",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -17,6 +23,7 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.0.1",
+    "standard-version": "^7.1.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -48,5 +55,6 @@
     "vuejs",
     "starter"
   ],
-  "description": "Vue.js example starter project"
+  "description": "Vue progress loading component",
+  "license": "MIT"
 }
