@@ -76,7 +76,6 @@ export default {
       this.elemWidth = Number(config.elemWidth) || this.elemWidth;
       this.elemMinHeight = Number(config.elemMinHeight) || this.elemMinHeight;
       this.elemMaxHeight = Number(config.elemMaxHeight) || this.elemMaxHeight;
-      console.log(config.elemDeltaHeight, typeof config.elemDeltaHeight);
       if (!isNoValue(config.elemDeltaHeight)) {
         const elemDeltaHeight = Number(config.elemDeltaHeight);
         this.elemDeltaHeight = !isNaN(elemDeltaHeight) ? elemDeltaHeight : this.elemDeltaHeight;
