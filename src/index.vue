@@ -7,11 +7,15 @@
 </template>
 
 <script>
+const isNoValue = (value) => {
+  return value === void 0 || value === null || value === '';
+};
+
 export default {
   name: 'z-progress-loading',
   props: ['progress', 'start', 'config'],
   watch: {
-    start(value, oldValue) {
+    start(value) {
       if (value) {
         this.startLoading();
       } else {
@@ -20,7 +24,7 @@ export default {
     },
     config: {
       deep: true,
-      handler(value) {
+      handler() {
         this.init();
       },
     },
@@ -72,8 +76,15 @@ export default {
       this.elemWidth = Number(config.elemWidth) || this.elemWidth;
       this.elemMinHeight = Number(config.elemMinHeight) || this.elemMinHeight;
       this.elemMaxHeight = Number(config.elemMaxHeight) || this.elemMaxHeight;
-      this.elemDeltaHeight = Number(config.elemDeltaHeight) || this.elemDeltaHeight;
-      this.spacing = Number(config.spacing) || this.spacing;
+      console.log(config.elemDeltaHeight, typeof config.elemDeltaHeight);
+      if (!isNoValue(config.elemDeltaHeight)) {
+        const elemDeltaHeight = Number(config.elemDeltaHeight);
+        this.elemDeltaHeight = !isNaN(elemDeltaHeight) ? elemDeltaHeight : this.elemDeltaHeight;
+      }
+      if (!isNoValue(config.spacing)) {
+        const spacing = Number(config.spacing);
+        this.spacing = !isNaN(spacing) ? spacing : this.spacing;
+      }
       this.bgColor = config.bgColor || this.bgColor;
       this.foreColor = config.foreColor || this.foreColor;
       this.step = Number(config.step) || this.step;

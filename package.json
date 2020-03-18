@@ -1,6 +1,7 @@
 {
   "name": "z-progress-loading",
   "version": "0.1.1",
+  "homepage": "https://github.com/shallinta/z-progress-loading",
   "files": [
     "dist"
   ],
@@ -9,6 +10,7 @@
     "start": "npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name z-progress-loading ./src/index.vue",
+    "prepare": "npm run build",
     "release": "standard-version && npm publish",
     "postrelease": "git push && git push origin --tags",
     "lint": "vue-cli-service lint"
@@ -53,7 +55,9 @@
   "keywords": [
     "vue",
     "vuejs",
-    "starter"
+    "progress",
+    "loading",
+    "canvas"
   ],
   "description": "Vue progress loading component",
   "license": "MIT"
