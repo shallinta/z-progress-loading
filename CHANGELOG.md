@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/shallinta/z-progress-loading/compare/v0.1.2...v0.1.3) (2020-03-18)
+
+
+### Bug Fixes
+
+* 去掉 console.log 信息 ([4a9d5e2](https://github.com/shallinta/z-progress-loading/commit/4a9d5e247fcc7335911d23041c8ccadc70053d6c))
+
 ### [0.1.2](https://github.com/shallinta/z-progress-loading/compare/v0.1.1...v0.1.2) (2020-03-18)
 
 
