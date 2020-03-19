@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/shallinta/z-progress-loading/compare/v0.1.3...v0.1.4) (2020-03-19)
+
+
+### Bug Fixes
+
+* 修复由于id重复导致的多个实例时只会渲染一个的问题 [#1](https://github.com/shallinta/z-progress-loading/issues/1) ([127c5d1](https://github.com/shallinta/z-progress-loading/commit/127c5d18ded4c5d8947702aa13f038bd03253cd8))
+
 ### [0.1.3](https://github.com/shallinta/z-progress-loading/compare/v0.1.2...v0.1.3) (2020-03-18)
 
 
