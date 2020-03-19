@@ -125,6 +125,7 @@ export default {
       switch(Number(type)) {
         case 0:
           this.noProgress = false;
+          this.progress = 0;
           this.config.elemWidth = 3;
           this.config.elemMinHeight = null;
           this.config.elemMaxHeight = 24;
@@ -157,6 +158,7 @@ export default {
           break;
         case 4:
           this.noProgress = true;
+          this.progress = 0;
           this.config.elemWidth = 4;
           this.config.elemMinHeight = 4;
           this.config.elemMaxHeight = 24;

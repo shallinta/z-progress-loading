@@ -22,6 +22,9 @@ export default {
         this.stopLoading();
       }
     },
+    progress() {
+      this.renderFrame();
+    },
     config: {
       deep: true,
       handler() {
@@ -161,9 +164,12 @@ export default {
         ctx.fillRect(x, y, width, height);
       });
     },
-    startLoading() {
+    renderFrame() {
       this.updateRects();
       this.draw();
+    },
+    startLoading() {
+      this.renderFrame();
       this.raf = requestAnimationFrame(this.startLoading.bind(this));
     },
     stopLoading() {
