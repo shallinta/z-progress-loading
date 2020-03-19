@@ -1,6 +1,6 @@
 <template>
-  <div id="z-progress-loading">
-    <canvas id="z-progress-loading-canvas" :width="width" :height="height">
+  <div :id="idBox" class="z-progress-loading">
+    <canvas :id="idCanvas" class="z-progress-loading-canvas" :width="width" :height="height">
       <i>Not supported.</i>
     </canvas>
   </div>
@@ -30,7 +30,11 @@ export default {
     },
   },
   data() {
+    const idPrefix = 'z-progress-loading';
     return {
+      idPrefix,
+      idBox: `${idPrefix}-box`,
+      idCanvas: `${idPrefix}-canvas`,
       width: 0,
       height: 0,
       elemWidth: 4,
@@ -48,6 +52,11 @@ export default {
       raf: null,
     };
   },
+  created() {
+    this.idPrefix = `${this.idPrefix}-${Math.random(10000)}`;
+    this.idBox = `${this.idPrefix}-box`;
+    this.idCanvas = `${this.idPrefix}-canvas`;
+  },
   mounted() {
     this.init();
     setTimeout(() => {
@@ -56,7 +65,7 @@ export default {
   },
   methods: {
     init() {
-      const container = document.getElementById('z-progress-loading');
+      const container = document.getElementById(this.idBox);
       const { width, height } = container.getBoundingClientRect();
       this.width = width - (8 * 2);
       this.spacing = Math.floor(this.width * 0.035);
@@ -143,7 +152,7 @@ export default {
       });
     },
     draw() {
-      const ref = document.getElementById('z-progress-loading-canvas');
+      const ref = document.getElementById(this.idCanvas);
       const ctx = ref.getContext('2d');
       ctx.clearRect(0, 0, this.width, this.height);
       this.rects.forEach(rect => {
@@ -167,8 +176,8 @@ export default {
 };
 </script>
 
-<style>
-#z-progress-loading {
+<style scoped>
+.z-progress-loading {
   width: 100%;
   height: 100%;
   padding: 0 8px;
@@ -176,7 +185,7 @@ export default {
   display: flex;
   align-items: center;
 }
-#z-progress-loading-canvas {
+.z-progress-loading-canvas {
   flex: 1;
 }
 </style>
