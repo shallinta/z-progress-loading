@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/shallinta/z-progress-loading/compare/v0.1.5...v0.1.6) (2020-03-19)
+
+
+### 优化
+
+* 改善 progress 改变时重复渲染的性能问题 ([d801af0](https://github.com/shallinta/z-progress-loading/commit/d801af0772b680b386206ad64afe1051a02c604f))
+
 ### [0.1.5](https://github.com/shallinta/z-progress-loading/compare/v0.1.4...v0.1.5) (2020-03-19)
 
 
