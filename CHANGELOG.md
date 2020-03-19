@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/shallinta/z-progress-loading/compare/v0.1.4...v0.1.5) (2020-03-19)
+
+
+### Bug Fixes
+
+* 修复动画暂停时改变progress参数值,进度动画不更新的问题 [#2](https://github.com/shallinta/z-progress-loading/issues/2) ([0f611a4](https://github.com/shallinta/z-progress-loading/commit/0f611a4f7d63b83e74461244f245f0a45c52fa4d))
+
 ### [0.1.4](https://github.com/shallinta/z-progress-loading/compare/v0.1.3...v0.1.4) (2020-03-19)
 
 
