@@ -23,7 +23,9 @@ export default {
       }
     },
     progress() {
-      this.renderFrame();
+      if (!this.start) {
+        this.renderFrame();
+      }
     },
     config: {
       deep: true,

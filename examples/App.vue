@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container" :style="{ width: progressWidth + 120 + 'px', height: progressHeight + 'px' }">
       <div class="play">
         <div class="inner-circle">
           <div class="icon" :class="start ? '' : 'stop'" @click="handleClick"></div>
         </div>
       </div>
-      <div class="progress">
+      <div class="progress" :style="{ width: progressWidth + 'px', height: progressHeight + 'px' }">
         <ZProgreeeLoading :progress="progress" :start="start" :config="config"/>
       </div>
       <span class="text" v-if="start">{{ Math.round(currentTime / 1000) }}”</span>
@@ -15,6 +15,14 @@
     <hr>
     <button class="btn" @click="handleClick">{{ start ? 'stop' : 'start' }}</button>
     进度：{{ progress.toFixed(0) }}%
+    <br>
+    <br>Progress-Width:
+    <input type="number" :value="progressWidth" @change="changeProgressWidth"> px
+    <button class="btn no-vertical-margin" @click="reload">点击刷新生效</button>
+    <br>
+    <br>Progress-Height:
+    <input type="number" :value="progressHeight" @change="changeProgressHeight"> px
+    <button class="btn no-vertical-margin" @click="reload">点击刷新生效</button>
     <br>
     <br>Time-Duration:
     <input type="number" v-model="duration"> ms
@@ -65,7 +73,11 @@ export default {
     ZProgreeeLoading
   },
   data() {
+    const progressWidth = Number(localStorage.getItem('z-progress-loading-width')) || 140;
+    const progressHeight = Number(localStorage.getItem('z-progress-loading-height')) || 36;
     return {
+      progressWidth,
+      progressHeight,
       progress: 0,
       start: false,
       duration: 10000,
@@ -91,9 +103,20 @@ export default {
         this.currentTime = 0;
       }
       this.progress = this.noProgress ? 0 : (this.currentTime / Number(value)) * 100;
-    }
+    },
   },
   methods: {
+    changeProgressWidth({ target: { value } }) {
+      const width = Number(value) || 140;
+      localStorage.setItem('z-progress-loading-width', width);
+    },
+    changeProgressHeight({ target: { value } }) {
+      const height = Number(value) || 36;
+      localStorage.setItem('z-progress-loading-height', height);
+    },
+    reload() {
+      location.reload();
+    },
     startProgress() {
       if (this.currentTime > this.duration) {
         this.currentTime = 0;
@@ -246,5 +269,9 @@ body {
   background: #399;
   box-shadow: 1px 2px 6px 1px #999;
   outline: none;
+}
+
+.btn.no-vertical-margin {
+  margin: 0 15px;
 }
 </style>
