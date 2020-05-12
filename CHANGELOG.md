@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/shallinta/z-progress-loading/compare/v0.1.7...v0.1.8) (2020-05-12)
+
+
+### 文档
+
+* update readme ([3efb8ae](https://github.com/shallinta/z-progress-loading/commit/3efb8aebcd2740fe214048e658fd5fbe3efa0916))
+
+
+### 优化
+
+* **build:** 优化build配置 ([019166a](https://github.com/shallinta/z-progress-loading/commit/019166ac9b6ca621feb96a8b70ee0e99e3c64719))
+
 ### [0.1.7](https://github.com/shallinta/z-progress-loading/compare/v0.1.6...v0.1.7) (2020-05-12)
 
 
