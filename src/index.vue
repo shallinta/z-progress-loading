@@ -1,19 +1,34 @@
 <template>
-  <div :id="idBox" class="z-progress-loading">
-    <canvas :id="idCanvas" class="z-progress-loading-canvas" :width="width" :height="height">
+  <div id="z-progress-loading">
+    <canvas
+      v-if="renderer === 'canvas'"
+      id="z-progress-loading-canvas"
+      :width="width"
+      :height="height"
+    >
       <i>Not supported.</i>
     </canvas>
+    <div v-if="renderer === 'dom'" id="z-progress-loading-dom">
+      <div
+        v-for="(rect, index) in rects"
+        :key="'dom-rect-' + index"
+        :style="{
+          left: rect.x + 'px',
+          top: rect.y + 'px',
+          width: rect.width + 'px',
+          height: rect.height + 'px',
+          background: rect.style,
+          borderRadius: rect.borderRadius + 'px',
+        }"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script>
-const isNoValue = (value) => {
-  return value === void 0 || value === null || value === '';
-};
-
 export default {
-  name: 'z-progress-loading',
-  props: ['progress', 'start', 'config'],
+  name: "z-progress-loading",
+  props: ["progress", "start", "config"],
   watch: {
     start(value) {
       if (value) {
@@ -22,24 +37,15 @@ export default {
         this.stopLoading();
       }
     },
-    progress() {
-      if (!this.start) {
-        this.renderFrame();
-      }
-    },
     config: {
       deep: true,
       handler() {
         this.init();
-      },
-    },
+      }
+    }
   },
   data() {
-    const idPrefix = 'z-progress-loading';
     return {
-      idPrefix,
-      idBox: `${idPrefix}-box`,
-      idCanvas: `${idPrefix}-canvas`,
       width: 0,
       height: 0,
       elemWidth: 4,
@@ -49,18 +55,15 @@ export default {
       elemMaxHeight: 24,
       elemDeltaHeight: 3,
       spacing: 5,
-      bgColor: 'blue',
-      foreColor: 'cyan',
+      bgColor: "blue",
+      foreColor: "cyan",
+      lineCap: "square",
       step: 1,
       rects: [],
       rectCount: 0,
-      raf: null,
+      renderer: "dom",
+      raf: null
     };
-  },
-  created() {
-    this.idPrefix = `${this.idPrefix}-${Math.random(10000)}`;
-    this.idBox = `${this.idPrefix}-box`;
-    this.idCanvas = `${this.idPrefix}-canvas`;
   },
   mounted() {
     this.init();
@@ -70,9 +73,9 @@ export default {
   },
   methods: {
     init() {
-      const container = document.getElementById(this.idBox);
+      const container = document.getElementById("z-progress-loading");
       const { width, height } = container.getBoundingClientRect();
-      this.width = width - (8 * 2);
+      this.width = width - 8 * 2;
       this.spacing = Math.floor(this.width * 0.035);
       this.height = height;
       this.elemWidth = Math.floor(this.width * 0.02);
@@ -84,23 +87,30 @@ export default {
       }
       this.elemMinHeight = this.elemWidth;
       this.elemMaxHeight = Math.floor(this.height * 0.75);
-      this.elemDeltaHeight = Math.floor((this.elemMaxHeight - this.elemMinHeight) / 6);
+      this.elemDeltaHeight = Math.floor(
+        (this.elemMaxHeight - this.elemMinHeight) / 6
+      );
       // --start-- 个性化配置
       const config = this.config || {};
       this.elemWidth = Number(config.elemWidth) || this.elemWidth;
       this.elemMinHeight = Number(config.elemMinHeight) || this.elemMinHeight;
       this.elemMaxHeight = Number(config.elemMaxHeight) || this.elemMaxHeight;
-      if (!isNoValue(config.elemDeltaHeight)) {
+
+      if (!this.isNoValue(config.elemDeltaHeight)) {
         const elemDeltaHeight = Number(config.elemDeltaHeight);
-        this.elemDeltaHeight = !isNaN(elemDeltaHeight) ? elemDeltaHeight : this.elemDeltaHeight;
+        this.elemDeltaHeight = !isNaN(elemDeltaHeight)
+          ? elemDeltaHeight
+          : this.elemDeltaHeight;
       }
-      if (!isNoValue(config.spacing)) {
+      if (!this.isNoValue(config.spacing)) {
         const spacing = Number(config.spacing);
         this.spacing = !isNaN(spacing) ? spacing : this.spacing;
       }
       this.bgColor = config.bgColor || this.bgColor;
       this.foreColor = config.foreColor || this.foreColor;
+      this.lineCap = config.lineCap || this.lineCap;
       this.step = Number(config.step) || this.step;
+      this.renderer = config.renderer || this.renderer;
       // --end--
       this.rects = [];
       this.rectCount = Math.floor(
@@ -121,23 +131,25 @@ export default {
           delta = -delta;
           curHeight += delta;
         }
-        const fillStyle =
+        const style =
           i / this.rectCount < this.progress / 100
             ? this.foreColor
             : this.bgColor;
+        const borderRadius = this.lineCap === "round" ? this.elemWidth / 2 : 0;
         this.rects.push({
           x,
           y,
           width: this.elemWidth,
           height,
-          fillStyle,
-          dir: delta,
+          style,
+          borderRadius,
+          dir: delta
         });
       }
     },
     updateRects() {
       this.rects = this.rects.map((rect, index) => {
-        let { x, y, width, height, fillStyle, dir } = rect;
+        let { x, y, width, height, style, borderRadius, dir } = rect;
         let delta = dir > 0 ? this.step : -this.step;
         if (
           height + delta < this.elemMaxHeight &&
@@ -149,29 +161,40 @@ export default {
           height += delta;
         }
         y = this.height / 2 - height / 2;
-        fillStyle =
+        style =
           index / this.rectCount < this.progress / 100
             ? this.foreColor
             : this.bgColor;
-        return { x, y, width, height, fillStyle, dir: delta };
+        return { x, y, width, height, style, borderRadius, dir: delta };
       });
     },
     draw() {
-      const ref = document.getElementById(this.idCanvas);
-      const ctx = ref.getContext('2d');
-      ctx.clearRect(0, 0, this.width, this.height);
-      this.rects.forEach(rect => {
-        const { x, y, width, height, fillStyle } = rect;
-        ctx.fillStyle = fillStyle;
-        ctx.fillRect(x, y, width, height);
-      });
-    },
-    renderFrame() {
-      this.updateRects();
-      this.draw();
+      if (this.renderer === "canvas") {
+        const ref = document.getElementById("z-progress-loading-canvas");
+        const ctx = ref.getContext("2d");
+        ctx.clearRect(0, 0, this.width, this.height);
+        this.rects.forEach(rect => {
+          const { x, y, width, height, style } = rect;
+          const xm = x + width / 2;
+          const ym = y + width / 2;
+          const hm = height - width;
+          ctx.beginPath();
+          ctx.strokeStyle = style;
+          ctx.lineWidth = width;
+          ctx.lineCap = this.lineCap;
+          ctx.moveTo(xm, ym);
+          ctx.lineTo(xm, y + hm);
+          ctx.stroke();
+          ctx.closePath();
+        });
+      }
+      if (this.renderer === "dom") {
+        // do nothing
+      }
     },
     startLoading() {
-      this.renderFrame();
+      this.updateRects();
+      this.draw();
       this.raf = requestAnimationFrame(this.startLoading.bind(this));
     },
     stopLoading() {
@@ -180,12 +203,15 @@ export default {
         this.raf = null;
       }
     },
-  },
+    isNoValue(value) {
+      return value === void 0 || value === null || value === "";
+    }
+  }
 };
 </script>
 
-<style scoped>
-.z-progress-loading {
+<style>
+#z-progress-loading {
   width: 100%;
   height: 100%;
   padding: 0 8px;
@@ -193,7 +219,15 @@ export default {
   display: flex;
   align-items: center;
 }
-.z-progress-loading-canvas {
+#z-progress-loading-canvas {
   flex: 1;
+}
+#z-progress-loading-dom {
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+#z-progress-loading-dom div {
+  position: absolute;
 }
 </style>

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="container" :style="{ width: progressWidth + 120 + 'px', height: progressHeight + 'px' }">
+    <div
+      class="container"
+      :style="{ width: progressWidth + 120 + 'px', height: progressHeight + 'px' }"
+    >
       <div class="play">
         <div class="inner-circle">
           <div class="icon" :class="start ? '' : 'stop'" @click="handleClick"></div>
@@ -9,12 +12,59 @@
       <div class="progress" :style="{ width: progressWidth + 'px', height: progressHeight + 'px' }">
         <ZProgreeeLoading :progress="progress" :start="start" :config="config"/>
       </div>
-      <span class="text" v-if="start">{{ Math.round(currentTime / 1000) }}”</span>
-      <span class="text" v-if="!start">{{ duration / 1000 }}”</span>
+      <span class="text" v-if="start">{{ Math.round(currentTime / 1000) }}"</span>
+      <span class="text" v-if="!start">{{ duration / 1000 }}"</span>
     </div>
     <hr>
     <button class="btn" @click="handleClick">{{ start ? 'stop' : 'start' }}</button>
     进度：{{ progress.toFixed(0) }}%
+    <br>
+    <br>Time-Duration:
+    <input type="number" v-model="duration"> ms
+    <br>
+    <br>
+    <em>Renderer:</em>
+    <label>
+      <input
+        type="radio"
+        name="renderer"
+        value="dom"
+        v-model="config.renderer"
+        @change="changeRenderer"
+      >dom
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="renderer"
+        value="canvas"
+        v-model="config.renderer"
+        @change="changeRenderer"
+      >canvas
+    </label>
+    <button class="btn no-vertical-margin" @click="reload">点击刷新生效</button>
+    <br>
+    <br>
+    <em>LineCap:</em>
+    <label>
+      <input
+        type="radio"
+        name="lineCap"
+        value="square"
+        v-model="config.lineCap"
+        @change="changeLineCap"
+      >square
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="lineCap"
+        value="round"
+        v-model="config.lineCap"
+        @change="changeLineCap"
+      >round
+    </label>
+    <br>
     <br>
     <br>Progress-Width:
     <input type="number" :value="progressWidth" @change="changeProgressWidth"> px
@@ -23,9 +73,6 @@
     <br>Progress-Height:
     <input type="number" :value="progressHeight" @change="changeProgressHeight"> px
     <button class="btn no-vertical-margin" @click="reload">点击刷新生效</button>
-    <br>
-    <br>Time-Duration:
-    <input type="number" v-model="duration"> ms
     <br>
     <br>Step:
     <input type="number" v-model="config.step">
@@ -53,13 +100,13 @@
     <br>
     <br>
     <h3>使用预设参数</h3>
-    <h4>有进度和 loading </h4>
+    <h4>有进度和 loading</h4>
     <button class="btn" @click="usePreset(0)">还原（有进度和 loading ）</button>
     <h4>无 loadind 纯进度</h4>
     <button class="btn" @click="usePreset(1)">使用预设1（无 loadind 纯进度）</button>
     <button class="btn" @click="usePreset(2)">使用预设2（无 loadind 纯进度）</button>
     <button class="btn" @click="usePreset(3)">使用预设3（无 loadind 纯进度）</button>
-    <h4>无进度纯 loading </h4>
+    <h4>无进度纯 loading</h4>
     <button class="btn" @click="usePreset(4)">使用预设4（无进度纯 loading ）</button>
   </div>
 </template>
@@ -73,8 +120,12 @@ export default {
     ZProgreeeLoading
   },
   data() {
-    const progressWidth = Number(localStorage.getItem('z-progress-loading-width')) || 140;
-    const progressHeight = Number(localStorage.getItem('z-progress-loading-height')) || 36;
+    const renderer =
+      localStorage.getItem("z-progress-loading-renderer") || "dom";
+    const progressWidth =
+      Number(localStorage.getItem("z-progress-loading-width")) || 140;
+    const progressHeight =
+      Number(localStorage.getItem("z-progress-loading-height")) || 36;
     return {
       progressWidth,
       progressHeight,
@@ -83,6 +134,7 @@ export default {
       duration: 10000,
       currentTime: 0,
       config: {
+        renderer: renderer,
         elemWidth: 3,
         elemMinHeight: null,
         elemMaxHeight: 24,
@@ -90,7 +142,8 @@ export default {
         spacing: 5,
         step: 1,
         bgColor: "blue",
-        foreColor: "cyan"
+        foreColor: "cyan",
+        lineCap: "round"
       },
       noProgress: false,
       timer: null
@@ -102,20 +155,26 @@ export default {
       if (this.currentTime > Number(value)) {
         this.currentTime = 0;
       }
-      this.progress = this.noProgress ? 0 : (this.currentTime / Number(value)) * 100;
-    },
+      this.progress = this.noProgress
+        ? 0
+        : (this.currentTime / Number(value)) * 100;
+    }
   },
   methods: {
+    changeRenderer({ target: { value } }) {
+      localStorage.setItem("z-progress-loading-renderer", value);
+    },
+    changeLineCap({ target: { value } }) {},
     changeProgressWidth({ target: { value } }) {
       const width = Number(value) || 140;
-      localStorage.setItem('z-progress-loading-width', width);
+      localStorage.setItem("z-progress-loading-width", width);
     },
     changeProgressHeight({ target: { value } }) {
       const height = Number(value) || 36;
-      localStorage.setItem('z-progress-loading-height', height);
+      localStorage.setItem("z-progress-loading-height", height);
     },
     reload() {
-      location.reload();
+      window.location.reload();
     },
     startProgress() {
       if (this.currentTime > this.duration) {
@@ -124,7 +183,9 @@ export default {
         this.stopProgress();
         return;
       }
-      this.progress = this.noProgress ? 0 : (this.currentTime / this.duration) * 100;
+      this.progress = this.noProgress
+        ? 0
+        : (this.currentTime / this.duration) * 100;
       this.timer = setTimeout(() => {
         this.currentTime += 100;
         this.startProgress();
@@ -145,7 +206,7 @@ export default {
       }
     },
     usePreset(type) {
-      switch(Number(type)) {
+      switch (Number(type)) {
         case 0:
           this.noProgress = false;
           this.progress = 0;
@@ -206,6 +267,11 @@ html,
 body {
   margin: 0;
   padding: 0;
+}
+
+em {
+  font-style: normal;
+  color: #f11e64;
 }
 
 .container {
