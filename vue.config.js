@@ -5,7 +5,7 @@ module.exports = {
       entry: 'examples/main.js',
       template: 'public/index.html',
       filename: 'index.html',
-      title: 'z-progreee-loading'
+      title: 'z-progress-loading'
     }
   },
   css: {
