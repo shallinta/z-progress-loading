@@ -8,7 +8,7 @@
 
 [![NPM](https://nodei.co/npm/z-progress-loading.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/z-progress-loading)
 
-> 基于 canvas 实现的加载进度条 vue 组件。
+> 基于 canvas 实现的加载进度条 vue 组件。（现在支持基于 dom 实现的配置）
 
 ## Features
 
@@ -70,6 +70,8 @@ npm run release
 
 - **config**: 样式配置；`elem` 的概念是每一个小矩形；
 
+  - `renderer`: 渲染方式，默认为 "dom"，可选 "canvas"
+
   - `elemWidth`: 单个小矩形宽度
 
   - `elemMinHeight`: 小矩形最小高度
@@ -85,6 +87,8 @@ npm run release
   - `bgColor`: 未达到进度的小矩形颜色
 
   - `foreColor`: 已达到进度的小矩形颜色
+
+  - `lineCap`: 线条裁切方式，默认为直角 "square"，可选圆角 "round"
 
 ## Recently Updated
 
