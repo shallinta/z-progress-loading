@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/shallinta/z-progress-loading/compare/v0.1.6...v0.1.7) (2020-05-12)
+
+
+### 特性
+
+* 增加渲染器配置和lineCap配置 ([79d92f4](https://github.com/shallinta/z-progress-loading/commit/79d92f458645ab606e77084d6f1a369ae54994c1))
+
 ### [0.1.6](https://github.com/shallinta/z-progress-loading/compare/v0.1.5...v0.1.6) (2020-03-19)
 
 
